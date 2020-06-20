@@ -1,0 +1,139 @@
+{% extends based_template_name %}
+
+{% block title %}Paints{% endblock title %}
+
+{% block page_title %}
+    <div class="container">
+        <h1 class="text-left border-bottom pb-2 mt-3 mb-4">Paints</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for paint in object_list%}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="row " >
+                    <div class="col-4  mb-5">
+                        <div class="card" id="card_{{ paint_id }}" style="width: 100%;">
+                            <img class="card-img-top" src="{{ paint.paint.url }}" alt="Card image cap" style="height: 25rem; object-fit: cover;">
+                            <div class="card-body" style="background: lightgray">
+                                <div class="row justify-content-between">
+                                    <a class="h5 ml-3 mt-2 mr-auto" href="{% url 'paint' slug=paint.slug %}">{{ paint.name}}</a>
+                                    {% if request.user.is_authenticated %}
+                                        {% if paint in request.user.profile.favorite_paints.all %}
+                                            <button id="fav_button_{{ paint.id }}" onclick="removeFavoritePaint({{ paint.id }})" type="button" class="btn btn-danger mr-2">Unfav</button>
+                                        {% else %}
+                                            <button id="fav_button_{{ paint.id }}" onclick="addFavoritePaint({{ paint.id }})" type="button" class="btn btn-warning mr-2">Fav</button>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if paint.genre is None %}
+                                        <p class="card-text ml-3 ">Paint by <a href="{% url 'painter' slug=paint.painter.slug %}"> {{ paint.painter.name }} </a> </p>
+                                    {% else %}
+                                        <p class="card-text ml-3">Paint by <a href="{% url 'painter' slug=paint.painter.slug %}"> {{ paint.painter.name }} </a>  in genre
+                                            <a class="font-italic" style="color: cornflowerblue" href="{% url 'genre' slug=paint.genre.slug %}"> #{{ paint.genre.name }} </a>  </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                    {%  if not forloop.counter0|divisibleby:2 %}
+                    <div class="col-4 mb-5">
+                        <div class="card" id="card_{{ paint_id }}" style="width: 100%;">
+                            <img class="card-img-top" src="{{ paint.paint.url }}" alt="Card image cap" style="height: 25rem; object-fit: cover;">
+                            <div class="card-body" style="background: lightgray">
+                                <div class="row justify-content-between">
+                                    <a class="h5 ml-3 mt-2 mr-auto" href="{% url 'paint' slug=paint.slug %}">{{ paint.name}}</a>
+                                    {% if request.user.is_authenticated %}
+                                        {% if paint in request.user.profile.favorite_paints.all %}
+                                            <button id="fav_button_{{ paint.id }}" onclick="removeFavoritePaint({{ paint.id }})" type="button" class="btn btn-danger mr-2">Unfav</button>
+                                        {% else %}
+                                            <button id="fav_button_{{ paint.id }}" onclick="addFavoritePaint({{ paint.id }})" type="button" class="btn btn-warning mr-2">Fav</button>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if paint.genre is None %}
+                                        <p class="card-text ml-3 ">Paint by  <a href="{% url 'painter' slug=paint.painter.slug %}"> {{ paint.painter.name }} </a></p>
+                                    {% else %}
+                                        <p class="card-text ml-3">Paint by <a href="{% url 'painter' slug=paint.painter.slug %}"> {{ paint.painter.name }} </a>  in genre
+                                            <a class="font-italic" style="color: cornflowerblue" href="{% url 'genre' slug=paint.genre.slug %}"> #{{ paint.genre.name }} </a>  </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                    <div class="col-4  mb-5">
+                        <div class="card" id="card_{{ paint_id }}" style="width: 100%;">
+                            <img class="card-img-top" src="{{ paint.paint.url }}" alt="Card image cap" style="height: 25rem; object-fit: cover;">
+                            <div class="card-body" style="background: lightgray">
+                                <div class="row justify-content-between">
+                                    <a class="h5 ml-3 mt-2 mr-auto" href="{% url 'paint' slug=paint.slug %}">{{ paint.name}}</a>
+                                    {% if request.user.is_authenticated %}
+                                        {% if paint in request.user.profile.favorite_paints.all  %}
+                                            <button id="fav_button_{{ paint.id }}" onclick="removeFavoritePaint({{ paint.id }})" type="button" class="btn btn-danger mr-2">Unfav</button>
+                                        {% else %}
+                                            <button id="fav_button_{{ paint.id }}" onclick="addFavoritePaint({{ paint.id }})" type="button" class="btn btn-warning mr-2">Fav</button>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if paint.genre is None %}
+                                        <p class="card-text ml-3 ">Paint by  <a href="{% url 'painter' slug=paint.painter.slug %}"> {{ paint.painter.name }} </a></p>
+                                    {% else %}
+                                        <p class="card-text ml-3">Paint by <a href="{% url 'painter' slug=paint.painter.slug %}"> {{ paint.painter.name }} </a>  in genre
+                                            <a class="font-italic" style="color: cornflowerblue" href="{% url 'genre' slug=paint.genre.slug %}"> #{{ paint.genre.name }} </a>  </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% endif %}
+        {% empty %}
+            <h5>There is no paints</h5>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+
+    function addFavoritePaint (paint_id) {
+        $.ajax({
+        url: '{% url 'add_favorite_paint' %}',
+        data: {'paint_id': paint_id},
+        dataType: 'json',
+        success: function (data) {
+          if (!data.success) {
+            alert("You can't do this");
+          }
+        }
+        });
+        let button = $(`#fav_button_${paint_id}`);
+
+        button.attr('onclick', `removeFavoritePaint(${paint_id})`);
+        button.text('Unfav');
+        button.attr('class', 'btn btn-danger mr-2');
+    }
+    function removeFavoritePaint (paint_id) {
+        $.ajax({
+        url: '{% url 'remove_favorite_paint' %}',
+        data: {'paint_id': paint_id},
+        dataType: 'json',
+        success: function (data) {
+          if (!data.success) {
+            alert("You can't do this");
+          }
+        }
+        });
+
+        let button = $(`#fav_button_${paint_id}`);
+
+        button.attr('onclick', `addFavoritePaint(${paint_id})`);
+        button.text('Fav');
+        button.attr('class', 'btn btn-warning mr-2');
+    }
+
+  </script>
+{% endblock %}
+

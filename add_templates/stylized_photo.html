@@ -1,0 +1,36 @@
+{% extends 'NeuralPainter/user_templates/user_base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block page_title %}
+    {{ form.media.css }}
+    <div class="container">
+        <h1 class="text-left border-bottom pb-2 mt-3 mb-4">Add stylized photo</h1>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <form class = "mb-5" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+
+            <div class="form-row mb-2">
+                <div class="form-group col-md-6 mb-0">
+                {{ form.based_photo|as_crispy_field }}
+                </div>
+
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.paint|as_crispy_field }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add stylized photo</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ form.media.js }}
+{% endblock %}

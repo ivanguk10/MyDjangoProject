@@ -1,0 +1,20 @@
+{% extends based_template_name %}
+
+{% block title %}{{object.name}}{% endblock title %}
+
+{% block page_title %}
+    <div class="container">
+        <h1 class="text-left border-bottom pb-2 mt-3 mb-4">{{ object.name }} painted by <a href="{% url 'painter' slug=object.painter.slug %}"> {{object.painter.name}} </a> </h1>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <img class="img" src="{{ object.paint.url }}" alt="Painter photo" style="width:100%; height: 37rem">
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'NeuralPainter/main.html' %}
+
+
+{% block title %}Verification{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        {% if is_success == True%}
+            <h1 class="text-left border-bottom pb-2 mt-3 mb-4">You successfully verified</h1>
+        {% else %}
+            <h1 class="text-left border-bottom pb-2 mt-3 mb-4">Verification error</h1>
+        {% endif %}
+            <a class="btn btn-success" role="button" href="{% url 'home' %}" >Go to Neural Painter</a>
+    </div>
+{% endblock %}

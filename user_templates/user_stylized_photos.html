@@ -1,0 +1,108 @@
+{% extends 'NeuralPainter/user_templates/user_base.html' %}
+
+{% block title %}Your stylized photos{% endblock title %}
+
+
+{% block page_title %}
+    <div class="container">
+        <h1 class="text-left border-bottom pb-2 mt-3 mb-4">Your stylized photos</h1>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div id="paint_container" class="container">
+        {% for stylized_photo in object_list%}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="row " >
+                    <div class="col-lg-4  mb-5">
+                        <div class="card" id="card_{{ forloop.counter0 }}" style="width: 100%;">
+                            <img class="card-img-top" src="{{ stylized_photo.stylized_photo.url }}" alt="Card image cap" style="height: 25rem; object-fit: cover;">
+                            <div class="card-body" style="background: lightgray">
+                                <div class="row justify-content-between">
+                                    <a class="h5 ml-3 pt-2 mr-auto text-truncate" data-toggle="tooltip" title="{{ stylized_photo.based_photo.name }} by {{ stylized_photo.paint.name }}"
+                                        style="width: 250px">{{ stylized_photo.based_photo.name }} by {{ stylized_photo.paint.name }}</a>
+                                    <button type="button" class="close mr-3" aria-label="Close" onclick="deleteStylizedPhoto({{ stylized_photo.id }}, {{ forloop.counter0 }})">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                    {%  if not forloop.counter0|divisibleby:2 %}
+                    <div class="col-lg-4  mb-5">
+                        <div class="card" id="card_{{ forloop.counter0 }}" style="width: 100%;">
+                            <img class="card-img-top" src="{{ stylized_photo.stylized_photo.url }}" alt="Card image cap" style="height: 25rem; object-fit: cover;">
+                            <div class="card-body" style="background: lightgray">
+                                <div class="row justify-content-between">
+                                    <a class="h5 ml-3 pt-2 mr-auto text-truncate" data-toggle="tooltip" title="{{ stylized_photo.based_photo.name }} by {{ stylized_photo.paint.name }}"
+                                        style="width: 250px">{{ stylized_photo.based_photo.name }} by {{ stylized_photo.paint.name }}</a>
+                                    <button type="button" class="close mr-3" aria-label="Close" onclick="deleteStylizedPhoto({{ stylized_photo.id }}, {{ forloop.counter0 }})">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                    <div class="col-lg-4  mb-5">
+                        <div class="card" id="card_{{ forloop.counter0 }}" style="width: 100%;">
+                            <img class="card-img-top" src="{{ stylized_photo.stylized_photo.url }}" alt="Card image cap" style="height: 25rem; object-fit: cover;">
+                            <div class="card-body" style="background: lightgray">
+                                <div class="row justify-content-between">
+                                    <a class="h5 ml-3 pt-2 mr-auto text-truncate" data-toggle="tooltip" title="{{ stylized_photo.based_photo.name }} by {{ stylized_photo.paint.name }}"
+                                        style="width: 250px">{{ stylized_photo.based_photo.name }} by {{ stylized_photo.paint.name }}</a>
+                                    <button type="button" class="close mr-3" aria-label="Close" onclick="deleteStylizedPhoto({{ stylized_photo.id }}, {{ forloop.counter0 }})">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% endif %}
+        {% empty %}
+            <h5>There is no stylized photos</h5>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+
+{% block javascript %}
+    <script>
+    let len = {{ object_list|length }};
+
+    function deleteStylizedPhoto(deleted_stylized_photo_id, counter) {
+        $.ajax({
+        url: '{% url 'delete_stylized_photo' %}',
+        data: {'deleted_stylized_photo_id': deleted_stylized_photo_id},
+        dataType: 'json',
+        success: function (data) {
+          if (!data.success) {
+            alert("You can't do this");
+          }
+        }
+
+        });
+
+        if(len === 1){
+            $(`#card_${counter}`).remove();
+            $('#photos_container').html('<h5>There is no stylized photos</h5>');
+        }
+        else{
+            if(len - 1 === counter){
+                $(`#card_${counter}`).remove();
+                len--;
+            }
+            else{
+                $(`#card_${counter}`).replaceWith($(`#card_${len-1}`));
+                len--;
+            }
+        }
+    }
+
+  </script>
+{% endblock %}

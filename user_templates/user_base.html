@@ -1,0 +1,110 @@
+{% extends 'NeuralPainter/main.html' %}
+
+
+{% block verification %}
+{% if request.user.profile.verified == False %}
+    <div class="alert alert-danger center-text" role="alert" style="margin-bottom: 0; border-radius: 0;">
+        <strong>Verification</strong> You need to verify you account by email вы{{ request.user.email }}
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block user_buttons %}
+    {% url 'favorite_painters' as fav_painters_url %}
+    {% url 'favorite_paints' as fav_paints_url %}
+    {% url 'photos' as photos_url %}
+    {% url 'stylized_photos' as stylized_photos_url %}
+
+    {% url 'add_paint' as add_paint_url %}
+    {% url 'add_painter' as add_painter_url %}
+    {% url 'add_genre' as add_genre_url %}
+    {% url 'add_photo' as add_photo_url %}
+    {% url 'add_stylized_photo' as add_stylized_photo_url %}
+
+    {% load static %}
+
+    <div class="container">
+        <div class="col">
+            <div class="row mt-3 mb-4" role="toolbar" aria-label="">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    {% if fav_painters_url == request.path %}
+                        <a class="nav-link active" href="{{ fav_painters_url }}">Favorite painters</a>
+                        {% else %}
+                        <a class="nav-link " href="{{ fav_painters_url }}" aria-disabled="true">Favorite painters</a>
+                    {% endif %}
+                </li>
+
+                <li class="nav-item">
+                    {% if fav_paints_url == request.path %}
+                        <a class="nav-link active"  href={{ fav_paints_url }}>Favorite paints</a>
+                        {% else %}
+                        <a class="nav-link "   href="{{ fav_paints_url }}" aria-disabled="true">Favorite paints</a>
+                    {% endif %}
+                </li>
+
+                <li class="nav-item">
+                {% if photos_url == request.path %}
+                    <a class="nav-link active " href="{{ photos_url }}">Photos</a>
+                    {% else %}
+                    <a class="nav-link" href= "{{ photos_url }}" aria-disabled="true">Photos</a>
+                {% endif %}
+                </li>
+
+                <li class="nav-item">
+                {% if stylized_photos_url == request.path %}
+                    <a class="nav-link active" href= "{{ stylized_photos_url }}" >Stylized photos</a>
+                    {% else %}
+                    <a class="nav-link"  href="{{ stylized_photos_url }}" aria-disabled="true">Stylized photos</a>
+                {% endif %}
+                </li>
+
+                <li class="nav-item">
+                    {% if add_painter_url == request.path %}
+                        <a class="nav-link active" href="{{ add_painter_url }}" style="background-color: green" aria-disabled="true">Add painter</a>
+                        {% else %}
+                        <a class="nav-link"  href="{{ add_painter_url }}" aria-disabled="true">Add painter</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if add_paint_url == request.path %}
+                        <a class=" nav-link active " href="{{ add_paint_url }}" style="background-color: green" aria-disabled="true">Add paint</a>
+                        {% else %}
+                        <a class=" nav-link "  href="{{ add_paint_url }}" aria-disabled="true">Add paint</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if add_genre_url == request.path %}
+                        <a class="nav-link active" href="{{ add_genre_url }}" style="background-color: green" aria-disabled="true">Add genre</a>
+                        {% else %}
+                        <a class="nav-link"  href="{{ add_genre_url }}" aria-disabled="true">Add genre</a>
+                    {% endif %}
+                </li>
+
+                <li class="nav-item">
+                    {% if add_photo_url == request.path %}
+                        <a class="nav-link active" href="{{ add_photo_url }}" style="background-color: green" aria-disabled="true">Add photo</a>
+                        {% else %}
+                        <a class="nav-link"  href="{{ add_photo_url }}" aria-disabled="true">Add photo</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if add_stylized_photo_url == request.path %}
+                        <a class="nav-link active" href="{{ add_stylized_photo_url }}" style="background-color: green" aria-disabled="true">Add stylized photo</a>
+                        {% else %}
+                        <a class="nav-link"  href="{{ add_stylized_photo_url }}" aria-disabled="true">Add stylized photo</a>
+                    {% endif %}
+                </li>
+            </ul>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block content %}
+{% endblock %}

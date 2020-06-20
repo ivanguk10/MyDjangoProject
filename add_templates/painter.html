@@ -1,0 +1,28 @@
+{% extends 'NeuralPainter/user_templates/user_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block page_title %}
+    {{ form.media.css }}
+
+    <div class="container">
+        <h1 class="text-left border-bottom pb-2 mt-3 mb-4">Add painter</h1>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <form class = "mb-5" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Add painter</button>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+    {{ form.media.js }}
+{% endblock %}
